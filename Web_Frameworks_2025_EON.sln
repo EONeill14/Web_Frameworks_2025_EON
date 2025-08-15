@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_Frameworks_2025_EON", "Web_Frameworks_2025_EON.csproj", "{654BA211-3908-45CB-882F-5C9070786112}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{654BA211-3908-45CB-882F-5C9070786112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{654BA211-3908-45CB-882F-5C9070786112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{654BA211-3908-45CB-882F-5C9070786112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{654BA211-3908-45CB-882F-5C9070786112}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A5771F8-A089-4A3C-945C-257A43E8D1E5}
+	EndGlobalSection
+EndGlobal
