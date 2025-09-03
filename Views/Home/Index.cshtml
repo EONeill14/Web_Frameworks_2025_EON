@@ -2,7 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container col-xxl-8 px-4 py-5">
+    <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+        <div class="col-10 col-sm-8 col-lg-6">
+            <img src="~/images/sports-equipment.jpg" class="d-block mx-lg-auto img-fluid" alt="Sports Equipment" width="700" height="500" loading="lazy">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5 fw-bold lh-1 mb-3">Welcome to Athlete Trade</h1>
+            <p class="lead">A community for athletes to swap, trade, and share equipment. Give your unused gear a second life and find what you need for your next game. Join our community and start swapping today!</p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <a asp-controller="Items" asp-action="Index" class="btn btn-primary btn-lg px-4 me-md-2">Browse Items</a>
+                <a asp-controller="Donation" asp-action="Index" class="btn btn-outline-secondary btn-lg px-4">Donate</a>
+            </div>
+        </div>
+    </div>
 </div>

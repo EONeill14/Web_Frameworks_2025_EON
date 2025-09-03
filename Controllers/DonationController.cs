@@ -38,7 +38,7 @@ namespace Web_Frameworks_2025_EON.Controllers
         public ActionResult CreateCheckoutSession(decimal amount)
         {
             // The URL of your application, used to build the success/cancel URLs
-            var domain = "https://localhost:7001"; // Replace with your actual port number
+            var domain = "https://localhost:7094"; // Replace with your actual port number
 
             var options = new SessionCreateOptions
             {
