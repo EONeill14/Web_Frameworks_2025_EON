@@ -18,5 +18,8 @@ namespace Web_Frameworks_2025_EON.Models
         public string OwnerId { get; set; } = string.Empty;
         [ForeignKey("OwnerId")]
         public ApplicationUser? Owner { get; set; }
+
+        public bool IsApproved { get; set; }
+
     }
 }

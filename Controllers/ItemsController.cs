@@ -215,5 +215,34 @@ namespace Web_Frameworks_2025_EON.Controllers
         {
             return _context.Items.Any(e => e.Id == id);
         }
+
+        [Authorize(Roles = "Admin")] // This ensures only Admins can access this page
+        public async Task<IActionResult> Pending()
+        {
+            // Find all items where IsApproved is false
+            var pendingItems = await _context.Items
+                .Where(i => !i.IsApproved)
+                .Include(i => i.Category)
+                .Include(i => i.Owner)
+                .ToListAsync();
+
+            return View(pendingItems);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Approve(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            if (item != null)
+            {
+                item.IsApproved = true;
+                _context.Update(item);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Pending));
+        }
+
     }
 }

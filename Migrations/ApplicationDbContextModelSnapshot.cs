@@ -17,7 +17,7 @@ namespace Web_Frameworks_2025_EON.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -102,12 +102,10 @@ namespace Web_Frameworks_2025_EON.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -144,12 +142,10 @@ namespace Web_Frameworks_2025_EON.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -239,6 +235,33 @@ namespace Web_Frameworks_2025_EON.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "GAA"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Tennis"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Golf"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Cycling"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Soccer"
+                        });
                 });
 
             modelBuilder.Entity("Web_Frameworks_2025_EON.Models.Item", b =>
@@ -266,6 +289,9 @@ namespace Web_Frameworks_2025_EON.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

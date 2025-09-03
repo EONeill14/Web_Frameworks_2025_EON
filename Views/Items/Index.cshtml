@@ -1,71 +1,43 @@
-﻿@model IEnumerable<Web_Frameworks_2025_EON.Models.Item>
+﻿@model IEnumerable<Web_Frameworks_2025_EON.Models.ViewModels.ItemViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Browse Items";
 }
 
-<h1>Index</h1>
+<h1>Browse Sports Equipment</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">List a New Item</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Condition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DatePosted)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Owner)
-            </th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Condition</th>
+            <th>Category</th>
+            <th>Listed By</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Condition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Brand)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DatePosted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Brand)</td>
+                <td>@Html.DisplayFor(modelItem => item.Condition)</td>
+                <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                <td>@Html.DisplayFor(modelItem => item.OwnerEmail)</td>
+                <td>
+                    @if (User.Identity.IsAuthenticated && User.Identity.Name == item.OwnerEmail)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
