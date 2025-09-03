@@ -33,7 +33,12 @@ builder.Services.AddAuthentication()
 
         options.ClientId = googleAuthNSection["ClientId"];
         options.ClientSecret = googleAuthNSection["ClientSecret"];
-    });
+    })
+    .AddMicrosoftAccount(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
+    }); 
 
 builder.Services.AddControllersWithViews();
 

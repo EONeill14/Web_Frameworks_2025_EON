@@ -12,8 +12,8 @@ using Web_Frameworks_2025_EON.Data;
 namespace Web_Frameworks_2025_EON.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250903024954_UpdatedItemModel")]
-    partial class UpdatedItemModel
+    [Migration("20250903032003_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
