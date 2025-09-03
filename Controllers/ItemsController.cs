@@ -128,7 +128,7 @@ namespace Web_Frameworks_2025_EON.Controllers
                 itemToUpdate.Condition = item.Condition;
                 itemToUpdate.Brand = item.Brand;
                 itemToUpdate.CategoryId = item.CategoryId;
-                itemToUpdate.Quantity = item.Quantity;
+                itemToUpdate.Quantity = item.Quantity; // <-- Add this line
                 if (!User.IsInRole("Admin")) itemToUpdate.IsApproved = false;
 
                 await _itemRepository.UpdateAsync(itemToUpdate);
@@ -177,5 +177,9 @@ namespace Web_Frameworks_2025_EON.Controllers
             }
             return RedirectToAction(nameof(Pending));
         }
+
+
+
     }
+
 }
