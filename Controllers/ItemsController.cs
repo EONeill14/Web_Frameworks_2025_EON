@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Web_Frameworks_2025_EON.Models;
 using Web_Frameworks_2025_EON.Models.ViewModels;
 using Web_Frameworks_2025_EON.Repositories;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Web_Frameworks_2025_EON.Controllers
 {
@@ -21,9 +23,20 @@ namespace Web_Frameworks_2025_EON.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category = null, string searchString = null)
         {
             var approvedItems = await _itemRepository.GetAllApprovedAsync();
+
+            if (!string.IsNullOrEmpty(category))
+            {
+                approvedItems = approvedItems.Where(i => i.Category != null && i.Category.Name == category);
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                approvedItems = approvedItems.Where(s => s.Name != null && s.Name.ToLower().Contains(searchString.ToLower()));
+            }
+
             var itemsViewModel = approvedItems.Select(item => new ItemViewModel
             {
                 Id = item.Id,
@@ -33,6 +46,7 @@ namespace Web_Frameworks_2025_EON.Controllers
                 CategoryName = item.Category?.Name,
                 OwnerEmail = item.Owner?.Email
             }).ToList();
+
             return View(itemsViewModel);
         }
 
@@ -53,7 +67,7 @@ namespace Web_Frameworks_2025_EON.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Condition,Brand,CategoryId")] Item item)
+        public async Task<IActionResult> Create([Bind("ListingType,Name,Description,Condition,Brand,CategoryId")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -78,7 +92,7 @@ namespace Web_Frameworks_2025_EON.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Condition,Brand,CategoryId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ListingType,Name,Description,Condition,Brand,CategoryId")] Item item)
         {
             if (id != item.Id) return NotFound();
 
@@ -87,6 +101,7 @@ namespace Web_Frameworks_2025_EON.Controllers
 
             if (ModelState.IsValid)
             {
+                itemToUpdate.ListingType = item.ListingType;
                 itemToUpdate.Name = item.Name;
                 itemToUpdate.Description = item.Description;
                 itemToUpdate.Condition = item.Condition;

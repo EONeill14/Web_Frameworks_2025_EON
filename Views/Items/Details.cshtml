@@ -1,60 +1,66 @@
 ﻿@model Web_Frameworks_2025_EON.Models.Item
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = Model.Name;
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Item</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Condition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Condition)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DatePosted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DatePosted)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Owner)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Owner.Id)
-        </dd>
-    </dl>
+    <h1>@Model.Name</h1>
+    <p class="text-muted">
+        A @(Model.Category?.Name) @(Model.ListingType?.ToLower())
+        @if (Model.ListingType == "Good")
+        {
+            <span> by @Model.Brand</span>
+        }
+    </p>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Details
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Description</h5>
+                <p class="card-text">@Model.Description</p>
+
+                @if (Model.ListingType == "Good")
+                {
+                    <hr>
+                    <p class="card-text"><strong>Condition:</strong> @Model.Condition</p>
+                }
+            </div>
+            <div class="card-footer text-muted">
+                Posted on: @Model.DatePosted.ToShortDateString()
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Owner Details
+            </div>
+            <div class="card-body">
+                <p>To arrange a swap, please contact the owner:</p>
+                <p>
+                    <strong>Email:</strong>
+                    <a href="mailto:@Model.Owner?.Email">@Model.Owner?.Email</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    @if (User.Identity.IsAuthenticated && UserManager.GetUserId(User) == Model.OwnerId)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
