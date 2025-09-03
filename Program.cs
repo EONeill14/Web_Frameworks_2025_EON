@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Stripe;
 using Web_Frameworks_2025_EON.Data;
 using Web_Frameworks_2025_EON.Models;
+using Web_Frameworks_2025_EON.Repositories;
 
 // This line should only appear once.
 var builder = WebApplication.CreateBuilder(args);
@@ -38,9 +39,11 @@ builder.Services.AddAuthentication()
     {
         options.ClientId = builder.Configuration["Authentication:Microsoft:ClientId"];
         options.ClientSecret = builder.Configuration["Authentication:Microsoft:ClientSecret"];
-    }); 
-
+    });
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddControllersWithViews();
+
+
 
 var app = builder.Build();
 

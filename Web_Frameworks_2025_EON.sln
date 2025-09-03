@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35828.75 d17.13
+VisualStudioVersion = 17.13.35828.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_Frameworks_2025_EON", "Web_Frameworks_2025_EON.csproj", "{654BA211-3908-45CB-882F-5C9070786112}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AthleteTrade.Tests", "..\AthleteTrade.Tests\AthleteTrade.Tests.csproj", "{8B150071-643F-4901-8251-1B9D3C47687B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{654BA211-3908-45CB-882F-5C9070786112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{654BA211-3908-45CB-882F-5C9070786112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{654BA211-3908-45CB-882F-5C9070786112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B150071-643F-4901-8251-1B9D3C47687B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B150071-643F-4901-8251-1B9D3C47687B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B150071-643F-4901-8251-1B9D3C47687B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B150071-643F-4901-8251-1B9D3C47687B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
