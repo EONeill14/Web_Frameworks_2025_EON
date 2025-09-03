@@ -7,6 +7,8 @@ using Web_Frameworks_2025_EON.Data;
 using Web_Frameworks_2025_EON.Models;
 using Web_Frameworks_2025_EON.Models.ViewModels;
 using Web_Frameworks_2025_EON.Repositories;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Web_Frameworks_2025_EON.Controllers
 {
