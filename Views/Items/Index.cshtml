@@ -4,40 +4,48 @@
     ViewData["Title"] = "Browse Items";
 }
 
-<h1>Browse Sports Equipment</h1>
+<div class="row">
+    <div class="col-md-3">
+        <h4 class="mb-3">Categories</h4>
+        @await Component.InvokeAsync("CategoryNavigation")
+    </div>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">List a New Item</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Brand</th>
-            <th>Condition</th>
-            <th>Category</th>
-            <th>Listed By</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.Name)</td>
-                <td>@Html.DisplayFor(modelItem => item.Brand)</td>
-                <td>@Html.DisplayFor(modelItem => item.Condition)</td>
-                <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
-                <td>@Html.DisplayFor(modelItem => item.OwnerEmail)</td>
-                <td>
-                    @if (User.Identity.IsAuthenticated && User.Identity.Name == item.OwnerEmail)
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
-                    }
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="col-md-9">
+        <h1>Browse Sports Equipment</h1>
+        <p>
+            <a asp-action="Create" class="btn btn-primary">List a New Item</a>
+        </p>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Condition</th>
+                    <th>Category</th>
+                    <th>Listed By</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Brand)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Condition)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CategoryName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.OwnerEmail)</td>
+                        <td>
+                            @if (User.Identity.IsAuthenticated && User.Identity.Name == item.OwnerEmail)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            }
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Web_Frameworks_2025_EON.Data;
 using Web_Frameworks_2025_EON.Models;
 using Web_Frameworks_2025_EON.Models.ViewModels;
 using Web_Frameworks_2025_EON.Repositories;
@@ -13,26 +15,22 @@ namespace Web_Frameworks_2025_EON.Controllers
     {
         private readonly IItemRepository _itemRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context; // For Requests
 
-        public ItemsController(IItemRepository itemRepository, UserManager<ApplicationUser> userManager)
+        public ItemsController(IItemRepository itemRepository, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _itemRepository = itemRepository;
             _userManager = userManager;
+            _context = context;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string category = null, string searchString = null)
         {
             var approvedItems = await _itemRepository.GetAllApprovedAsync();
-            var itemsViewModel = approvedItems.Select(item => new ItemViewModel
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Brand = item.Brand,
-                Condition = item.Condition,
-                CategoryName = item.Category?.Name,
-                OwnerEmail = item.Owner?.Email
-            }).ToList();
+            if (!string.IsNullOrEmpty(category)) { approvedItems = approvedItems.Where(i => i.Category != null && i.Category.Name == category); }
+            if (!string.IsNullOrEmpty(searchString)) { approvedItems = approvedItems.Where(s => s.Name != null && s.Name.ToLower().Contains(searchString.ToLower())); }
+            var itemsViewModel = approvedItems.Select(item => new ItemViewModel { Id = item.Id, Name = item.Name, Brand = item.Brand, Condition = item.Condition, CategoryName = item.Category?.Name, OwnerEmail = item.Owner?.Email }).ToList();
             return View(itemsViewModel);
         }
 
@@ -53,7 +51,7 @@ namespace Web_Frameworks_2025_EON.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Condition,Brand,CategoryId")] Item item)
+        public async Task<IActionResult> Create([Bind("ListingType,Name,Description,Condition,Brand,CategoryId,Quantity")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -67,6 +65,43 @@ namespace Web_Frameworks_2025_EON.Controllers
             return View(item);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> MakeRequest(int itemId)
+        {
+            var item = await _itemRepository.GetByIdAsync(itemId);
+            var requesterId = _userManager.GetUserId(User);
+
+            if (item == null || item.Quantity <= 0 || item.OwnerId == requesterId)
+            {
+                TempData["RequestResult"] = "Unable to make request at this time.";
+                return RedirectToAction("Details", new { id = itemId });
+            }
+
+            var existingRequest = await _context.Requests
+                .FirstOrDefaultAsync(r => r.ItemId == itemId && r.RequesterId == requesterId && r.Status == RequestStatus.Pending);
+
+            if (existingRequest != null)
+            {
+                TempData["RequestResult"] = "You have already sent a request for this item.";
+                return RedirectToAction("Details", new { id = itemId });
+            }
+
+            var request = new Request
+            {
+                ItemId = itemId,
+                RequesterId = requesterId,
+                Status = RequestStatus.Pending,
+                Timestamp = DateTime.UtcNow
+            };
+
+            _context.Requests.Add(request);
+            await _context.SaveChangesAsync();
+
+            TempData["RequestResult"] = "Your request has been sent to the owner!";
+            return RedirectToAction("Details", new { id = itemId });
+        }
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -78,7 +113,7 @@ namespace Web_Frameworks_2025_EON.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Condition,Brand,CategoryId")] Item item)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ListingType,Name,Description,Condition,Brand,CategoryId,Quantity")] Item item)
         {
             if (id != item.Id) return NotFound();
 
@@ -87,11 +122,13 @@ namespace Web_Frameworks_2025_EON.Controllers
 
             if (ModelState.IsValid)
             {
+                itemToUpdate.ListingType = item.ListingType;
                 itemToUpdate.Name = item.Name;
                 itemToUpdate.Description = item.Description;
                 itemToUpdate.Condition = item.Condition;
                 itemToUpdate.Brand = item.Brand;
                 itemToUpdate.CategoryId = item.CategoryId;
+                itemToUpdate.Quantity = item.Quantity;
                 if (!User.IsInRole("Admin")) itemToUpdate.IsApproved = false;
 
                 await _itemRepository.UpdateAsync(itemToUpdate);

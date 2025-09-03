@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Web_Frameworks_2025_EON.Models.ViewModels.ConversationViewModel>
+
+@{
+    ViewData["Title"] = "My Messages";
+}
+
+<h1>My Messages</h1>
+
+<div class="list-group">
+    @if (Model.Any())
+    {
+        @foreach (var convo in Model)
+        {
+            <a asp-action="Chat" asp-route-otherUserId="@convo.OtherUserId" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Conversation with @convo.OtherUserEmail</h5>
+                    <small>@convo.LastMessage.Timestamp.ToString("g")</small>
+                </div>
+                <p class="mb-1 text-muted">@convo.LastMessage.Content</p>
+            </a>
+        }
+    }
+    else
+    {
+        <p>You have no messages yet.</p>
+    }
+</div>

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Web_Frameworks_2025_EON.Models.Category>
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<h1>Manage Categories</h1>
+<p><a asp-action="Create" class="btn btn-primary">Create New</a></p>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr><td>@item.Name</td></tr>
+        }
+    </tbody>
+</table>

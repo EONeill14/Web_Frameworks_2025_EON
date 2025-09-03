@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Web_Frameworks_2025_EON.Models.Request>
+
+@{
+    ViewData["Title"] = "My Received Requests";
+}
+
+<h1>My Received Requests</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Requested By</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var request in Model)
+        {
+            <tr>
+                <td>@request.Item.Name</td>
+                <td>@request.Requester.Email</td>
+                <td>@request.Timestamp.ToString("g")</td>
+                <td>@request.Status</td>
+                <td>
+                    @if (request.Status == RequestStatus.Pending)
+                    {
+                        <form asp-action="Accept" method="post" class="d-inline">
+                            <input type="hidden" name="requestId" value="@request.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                        </form>
+                        <form asp-action="Deny" method="post" class="d-inline">
+                            <input type="hidden" name="requestId" value="@request.Id" />
+                            <button type="submit" class="btn btn-sm btn-danger">Deny</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
